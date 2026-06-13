@@ -6,6 +6,7 @@ import { JobMatch } from '../models/JobMatch.model.js';
 import { cloudinary } from '../config/cloudinary.js';
 import { env } from '../config/env.js';
 import { ApiError } from '../utils/ApiError.js';
+import { pdfService } from './pdf.service.js';
 
 export const resumeService = {
   async createFromUpload(userId, file) {
@@ -28,6 +29,18 @@ export const resumeService = {
       storageType = 'local';
     }
 
+    let extractedText = '';
+    try {
+      if (file.buffer) {
+        extractedText = await pdfService.extractFromBuffer(file.buffer);
+      } else if (file.path) {
+        const buffer = await fs.readFile(file.path);
+        extractedText = await pdfService.extractFromBuffer(buffer);
+      }
+    } catch (err) {
+      console.warn('Failed to extract text during upload, will fall back on analysis:', err.message);
+    }
+
     return Resume.create({
       userId,
       fileName: file.originalname,
@@ -36,6 +49,7 @@ export const resumeService = {
       storageType,
       fileSize: file.size,
       mimeType: file.mimetype,
+      extractedText,
     });
   },
 

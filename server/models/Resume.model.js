@@ -9,6 +9,7 @@ const resumeSchema = new mongoose.Schema(
     storageType: { type: String, enum: ['local', 'cloudinary'], default: 'local' },
     fileSize: { type: Number },
     mimeType: { type: String, default: 'application/pdf' },
+    extractedText: { type: String },
     uploadedAt: { type: Date, default: Date.now },
   },
   { timestamps: true }

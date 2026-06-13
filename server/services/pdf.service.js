@@ -14,6 +14,10 @@ export const pdfService = {
   },
 
   async extractFromResume(resume) {
+    if (resume.extractedText) {
+      return resume.extractedText;
+    }
+
     if (resume.storageType === 'local') {
       const filePath = path.isAbsolute(resume.fileUrl)
         ? resume.fileUrl
