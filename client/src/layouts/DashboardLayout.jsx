@@ -28,11 +28,11 @@ export default function DashboardLayout() {
 
   return (
     <ProtectedRoute>
-      <div className="relative flex h-screen overflow-hidden bg-slate-50/10 dark:bg-[#030712] p-4 gap-4 transition-colors duration-300">
+      <div className="relative flex h-screen overflow-hidden bg-transparent p-4 gap-4 transition-all duration-300">
         {/* Glow mesh blobs behind content */}
-        <div className="pointer-events-none absolute -left-20 -top-20 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-500/10 to-fuchsia-500/10 blur-[120px] dark:from-indigo-500/8 dark:to-purple-500/8" />
-        <div className="pointer-events-none absolute -right-20 -bottom-20 -z-10 h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-fuchsia-500/10 to-indigo-500/10 blur-[150px] dark:from-purple-500/8 dark:to-indigo-500/8" />
-        <div className="pointer-events-none absolute left-[45%] top-[30%] -z-10 h-[400px] w-[400px] rounded-full bg-indigo-500/5 blur-[100px] dark:bg-indigo-500/5 animate-pulse" />
+        <div className="pointer-events-none absolute -left-20 -top-20 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-500/20 to-fuchsia-500/20 blur-[120px] dark:from-indigo-500/15 dark:to-purple-500/15" />
+        <div className="pointer-events-none absolute -right-20 -bottom-20 -z-10 h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-fuchsia-500/20 to-indigo-500/20 blur-[150px] dark:from-purple-500/15 dark:to-indigo-500/15" />
+        <div className="pointer-events-none absolute left-[45%] top-[30%] -z-10 h-[400px] w-[400px] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-500/8 animate-pulse" />
         
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 -z-10 bg-grid-pattern opacity-100" />

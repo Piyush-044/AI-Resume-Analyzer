@@ -6,7 +6,7 @@
 
 body {
   font-family: 'Outfit', sans-serif;
-  @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300;
+  @apply bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] text-slate-900 antialiased dark:from-[#020617] dark:via-[#080c14] dark:to-[#020408] dark:text-slate-100 transition-colors duration-300 min-h-screen;
 }
 
 /* Custom Scrollbars */
