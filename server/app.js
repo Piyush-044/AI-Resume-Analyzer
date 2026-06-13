@@ -20,7 +20,21 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(
   cors({
-    origin: env.clientUrl,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+      if (!origin) return callback(null, true);
+      
+      const isAllowed =
+        origin === env.clientUrl ||
+        origin.startsWith('http://localhost') ||
+        origin.endsWith('.vercel.app');
+        
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(null, false); // Or pass error: callback(new Error('Not allowed by CORS'))
+      }
+    },
     credentials: true,
   })
 );
