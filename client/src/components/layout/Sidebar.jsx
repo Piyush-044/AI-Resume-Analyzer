@@ -40,8 +40,8 @@ export default function Sidebar({ onNavigate }) {
   const { logout, user } = useAuth();
 
   return (
-    <aside className="flex h-full w-64 flex-col border-r border-slate-200/60 bg-white/90 dark:border-slate-800/40 dark:bg-slate-950/90 backdrop-blur-xl transition-all duration-300">
-      <div className="flex items-center gap-3 border-b border-slate-200/60 px-6 py-5 dark:border-slate-800/40">
+    <aside className="flex h-full w-64 flex-col rounded-2xl border border-slate-200/50 bg-white/70 shadow-sm dark:border-slate-800/40 dark:bg-slate-950/40 backdrop-blur-md transition-all duration-300">
+      <div className="flex items-center gap-3 border-b border-slate-200/50 px-6 py-5 dark:border-slate-800/40">
         <motion.div
           whileHover={{ rotate: 15, scale: 1.15 }}
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}

@@ -19,8 +19,13 @@ export default function StatCard({ title, value, subtitle, icon: Icon, color = '
           {subtitle && <p className="text-xs text-slate-400 dark:text-slate-500 font-medium">{subtitle}</p>}
         </div>
         {Icon && (
-          <div className={`rounded-2xl p-3 transition-all duration-300 hover:rotate-6 ${colors[color]}`}>
-            <Icon className="h-6 w-6" />
+          <div className="relative shrink-0">
+            {/* Ambient Radial Icon Glow */}
+            <div className={`absolute inset-0 rounded-full opacity-60 blur-md pointer-events-none icon-glow-${color === 'primary' ? 'indigo' : color === 'green' ? 'emerald' : 'violet'}`} />
+            
+            <div className={`relative z-10 rounded-2xl p-3 transition-all duration-350 hover:rotate-6 ${colors[color]}`}>
+              <Icon className="h-6 w-6" />
+            </div>
           </div>
         )}
       </div>

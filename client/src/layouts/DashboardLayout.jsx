@@ -28,10 +28,10 @@ export default function DashboardLayout() {
 
   return (
     <ProtectedRoute>
-      <div className="relative flex h-screen overflow-hidden bg-slate-50/30 dark:bg-[#030712] transition-colors duration-300">
+      <div className="relative flex h-screen overflow-hidden bg-slate-50/10 dark:bg-[#030712] p-4 gap-4 transition-colors duration-300">
         {/* Glow mesh blobs behind content */}
-        <div className="pointer-events-none absolute -left-20 -top-20 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-500/10 to-fuchsia-500/10 blur-[120px] dark:from-indigo-600/5 dark:to-purple-600/5" />
-        <div className="pointer-events-none absolute -right-20 -bottom-20 -z-10 h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-fuchsia-500/10 to-indigo-500/10 blur-[150px] dark:from-purple-600/5 dark:to-indigo-600/5" />
+        <div className="pointer-events-none absolute -left-20 -top-20 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-500/10 to-fuchsia-500/10 blur-[120px] dark:from-indigo-500/8 dark:to-purple-500/8" />
+        <div className="pointer-events-none absolute -right-20 -bottom-20 -z-10 h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-fuchsia-500/10 to-indigo-500/10 blur-[150px] dark:from-purple-500/8 dark:to-indigo-500/8" />
         <div className="pointer-events-none absolute left-[45%] top-[30%] -z-10 h-[400px] w-[400px] rounded-full bg-indigo-500/5 blur-[100px] dark:bg-indigo-500/5 animate-pulse" />
         
         {/* Grid pattern overlay */}
@@ -48,9 +48,9 @@ export default function DashboardLayout() {
         >
           <Sidebar onNavigate={() => setSidebarOpen(false)} />
         </div>
-        <div className="flex flex-1 flex-col overflow-hidden">
+        <div className="flex flex-1 flex-col overflow-hidden gap-4">
           <Header title={title} onMenuClick={() => setSidebarOpen(true)} />
-          <main className="flex-1 overflow-y-auto p-4 lg:p-8">
+          <main className="flex-1 overflow-y-auto rounded-2xl border border-slate-200/50 bg-white/30 p-4 lg:p-8 dark:border-slate-800/40 dark:bg-slate-900/10 backdrop-blur-md shadow-sm">
             <Outlet />
           </main>
         </div>

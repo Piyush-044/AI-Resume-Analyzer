@@ -6,7 +6,7 @@ export default function Header({ title, onMenuClick }) {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="flex items-center justify-between border-b border-slate-200/60 bg-white/80 px-4 py-4 lg:px-8 dark:border-slate-800/40 dark:bg-slate-950/85 backdrop-blur-xl transition-all duration-300">
+    <header className="flex items-center justify-between rounded-2xl border border-slate-200/50 bg-white/70 px-4 py-4 lg:px-8 dark:border-slate-800/40 dark:bg-slate-950/40 backdrop-blur-md shadow-sm transition-all duration-300">
       <div className="flex items-center gap-3">
         <motion.button
           whileTap={{ scale: 0.9 }}
