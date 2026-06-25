@@ -6,8 +6,8 @@ export default function Card({ children, className = '', title, action }) {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      whileHover={{ y: -3 }}
-      className={`rounded-2xl border border-slate-200/50 bg-white/70 p-6 shadow-sm backdrop-blur-md hover:shadow-md hover:border-slate-300/60 dark:border-slate-800/40 dark:bg-slate-900/40 dark:hover:border-slate-700/60 dark:backdrop-blur-lg transition-all duration-300 ${className}`}
+      whileHover={{ y: -4, scale: 1.005 }}
+      className={`rounded-2xl glass-panel glass-panel-hover neon-card-glow neon-card-glow-hover p-6 hover:shadow-lg transition-all duration-300 ${className}`}
     >
       {(title || action) && (
         <div className="mb-5 flex items-center justify-between">
