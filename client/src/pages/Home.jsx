@@ -44,11 +44,11 @@ export default function Home() {
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] dark:from-[#030712] dark:via-[#080d1a] dark:to-[#020408] transition-colors duration-500">
       
       {/* Background Animated Cyber Grid */}
-      <div className="absolute inset-0 -z-25 cyber-grid opacity-70" />
+      <div className="absolute inset-0 -z-10 cyber-grid opacity-70 pointer-events-none" />
 
       {/* Rotating Radial Light Blobs */}
-      <div className="absolute top-[-10%] left-[-10%] -z-10 h-[600px] w-[600px] rounded-full bg-indigo-500/10 blur-[130px] animate-pulse-subtle" />
-      <div className="absolute top-[20%] right-[-10%] -z-10 h-[700px] w-[700px] rounded-full bg-purple-500/10 blur-[150px] animate-pulse-subtle" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-[-10%] left-[-10%] -z-10 h-[600px] w-[600px] rounded-full bg-indigo-500/10 blur-[130px] animate-pulse-subtle pointer-events-none" />
+      <div className="absolute top-[20%] right-[-10%] -z-10 h-[700px] w-[700px] rounded-full bg-purple-500/10 blur-[150px] animate-pulse-subtle pointer-events-none" style={{ animationDelay: '2s' }} />
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
         <div className="grid gap-16 lg:grid-cols-12 lg:items-center">
