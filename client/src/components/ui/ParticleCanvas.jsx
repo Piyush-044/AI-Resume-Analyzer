@@ -1,110 +1,134 @@
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
-import * as THREE from 'three';
-
-function StarField() {
-  const ref = useRef();
-  
-  const [positions, colors] = useMemo(() => {
-    const count = 3000;
-    const pos = new Float32Array(count * 3);
-    const col = new Float32Array(count * 3);
-    
-    for (let i = 0; i < count; i++) {
-      // Sphere distribution
-      const r = Math.random() * 3 + 0.5;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      
-      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      pos[i * 3 + 2] = r * Math.cos(phi);
-      
-      // Colors: indigo to cyan gradient
-      const t = Math.random();
-      col[i * 3] = 0.38 + t * 0.15;     // R
-      col[i * 3 + 1] = 0.4 + t * 0.3;   // G
-      col[i * 3 + 2] = 0.9 + t * 0.1;   // B
-    }
-    return [pos, col];
-  }, []);
-
-  useFrame((state, delta) => {
-    if (ref.current) {
-      ref.current.rotation.x -= delta * 0.04;
-      ref.current.rotation.y -= delta * 0.06;
-    }
-  });
-
-  return (
-    <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
-      <PointMaterial
-        transparent
-        vertexColors
-        size={0.022}
-        sizeAttenuation
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        opacity={0.85}
-      />
-    </Points>
-  );
-}
-
-function NeuralConnections() {
-  const ref = useRef();
-  
-  const lineGeometry = useMemo(() => {
-    const points = [];
-    const nodeCount = 18;
-    const nodes = Array.from({ length: nodeCount }, () => new THREE.Vector3(
-      (Math.random() - 0.5) * 3.5,
-      (Math.random() - 0.5) * 3.5,
-      (Math.random() - 0.5) * 2
-    ));
-    
-    nodes.forEach((node, i) => {
-      nodes.forEach((other, j) => {
-        if (i !== j && node.distanceTo(other) < 1.8) {
-          points.push(node, other);
-        }
-      });
-    });
-    
-    return new THREE.BufferGeometry().setFromPoints(points);
-  }, []);
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.08;
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.3;
-    }
-  });
-
-  return (
-    <lineSegments ref={ref} geometry={lineGeometry}>
-      <lineBasicMaterial
-        color="#6366f1"
-        transparent
-        opacity={0.15}
-        blending={THREE.AdditiveBlending}
-      />
-    </lineSegments>
-  );
-}
+import { useEffect, useRef } from 'react';
 
 export default function ParticleCanvas({ className = '' }) {
+  const canvasRef = useRef(null);
+  const animRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let width = canvas.offsetWidth;
+    let height = canvas.offsetHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    // ── Particle Config ──
+    const PARTICLE_COUNT = 110;
+    const CONNECTION_DIST = 130;
+    const MOUSE_REPEL = 100;
+
+    const mouse = { x: -999, y: -999 };
+
+    // ── Create Particles ──
+    const particles = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1,
+      alpha: Math.random() * 0.5 + 0.3,
+      // color: indigo / violet / cyan
+      hue: [230, 260, 190][Math.floor(Math.random() * 3)],
+    }));
+
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    };
+    const handleMouseLeave = () => { mouse.x = -999; mouse.y = -999; };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+
+    // ── Resize ──
+    const handleResize = () => {
+      width = canvas.offsetWidth;
+      height = canvas.offsetHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+    window.addEventListener('resize', handleResize);
+
+    // ── Draw Loop ──
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Update + draw particles
+      particles.forEach((p) => {
+        // Mouse repel
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_REPEL) {
+          const force = (MOUSE_REPEL - dist) / MOUSE_REPEL;
+          p.vx += (dx / dist) * force * 0.4;
+          p.vy += (dy / dist) * force * 0.4;
+        }
+
+        // Speed cap
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (speed > 1.5) { p.vx *= 0.95; p.vy *= 0.95; }
+
+        // Friction
+        p.vx *= 0.99;
+        p.vy *= 0.99;
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap edges
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        // Draw dot
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 80%, 70%, ${p.alpha})`;
+        ctx.fill();
+      });
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i];
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONNECTION_DIST) {
+            const opacity = (1 - dist / CONNECTION_DIST) * 0.25;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `hsla(240, 70%, 70%, ${opacity})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
   return (
-    <div className={`w-full h-full ${className}`}>
-      <Canvas
-        camera={{ position: [0, 0, 4], fov: 60 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent' }}
-      >
-        <StarField />
-        <NeuralConnections />
-      </Canvas>
-    </div>
+    <canvas
+      ref={canvasRef}
+      className={`w-full h-full ${className}`}
+      style={{ display: 'block' }}
+    />
   );
 }

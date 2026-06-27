@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import {
@@ -8,11 +8,10 @@ import {
   Layers, Code2, Rocket
 } from 'lucide-react';
 import TypewriterText from '../components/ui/TypewriterText';
+import ParticleCanvas from '../components/ui/ParticleCanvas';
 import AnimatedCounter from '../components/ui/AnimatedCounter';
 import AuroraBackground from '../components/ui/AuroraBackground';
 import MagneticButton from '../components/ui/MagneticButton';
-
-const ParticleCanvas = lazy(() => import('../components/ui/ParticleCanvas'));
 
 /* ── DATA ── */
 const FEATURES = [
@@ -185,9 +184,7 @@ export default function Home() {
       <section ref={heroRef} className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
         {/* Particle Canvas Full BG */}
         <div className="absolute inset-0 -z-5">
-          <Suspense fallback={null}>
-            <ParticleCanvas />
-          </Suspense>
+          <ParticleCanvas />
         </div>
 
         {/* Floating Orbs */}
