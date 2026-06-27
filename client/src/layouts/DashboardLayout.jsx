@@ -3,6 +3,8 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
 import ProtectedRoute from '../components/layout/ProtectedRoute';
+import AuroraBackground from '../components/ui/AuroraBackground';
+import SpotlightCursor from '../components/ui/SpotlightCursor';
 
 const titles = {
   '/dashboard': 'Dashboard',
@@ -28,19 +30,21 @@ export default function DashboardLayout() {
 
   return (
     <ProtectedRoute>
-      <div className="relative flex h-screen overflow-hidden bg-transparent p-4 gap-4 transition-all duration-300">
-        {/* Glow mesh blobs behind content */}
-        <div className="pointer-events-none absolute -left-20 -top-20 -z-10 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-500/20 to-fuchsia-500/20 blur-[120px] dark:from-indigo-500/15 dark:to-purple-500/15" />
-        <div className="pointer-events-none absolute -right-20 -bottom-20 -z-10 h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-fuchsia-500/20 to-indigo-500/20 blur-[150px] dark:from-purple-500/15 dark:to-indigo-500/15" />
-        <div className="pointer-events-none absolute left-[45%] top-[30%] -z-10 h-[400px] w-[400px] rounded-full bg-indigo-500/10 blur-[100px] dark:bg-indigo-500/8 animate-pulse" />
-        
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 -z-10 bg-grid-pattern opacity-100" />
+      <div className="relative flex h-screen overflow-hidden bg-[#030712] p-3 gap-3 transition-all duration-300">
+        {/* Aurora Background */}
+        <AuroraBackground className="-z-10" />
+        <SpotlightCursor />
 
+        {/* Dot grid overlay */}
+        <div className="absolute inset-0 -z-10 dot-grid opacity-20 pointer-events-none" />
+
+        {/* Mobile overlay */}
         <div
-          className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden ${sidebarOpen ? '' : 'hidden'}`}
+          className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden ${sidebarOpen ? '' : 'hidden'}`}
           onClick={() => setSidebarOpen(false)}
         />
+
+        {/* Sidebar */}
         <div
           className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 lg:static lg:translate-x-0 ${
             sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -48,9 +52,11 @@ export default function DashboardLayout() {
         >
           <Sidebar onNavigate={() => setSidebarOpen(false)} />
         </div>
-        <div className="flex flex-1 flex-col overflow-hidden gap-4">
+
+        {/* Main content */}
+        <div className="flex flex-1 flex-col overflow-hidden gap-3">
           <Header title={title} onMenuClick={() => setSidebarOpen(true)} />
-          <main className="flex-1 overflow-y-auto rounded-2xl border border-slate-200/50 bg-white/30 p-4 lg:p-8 dark:border-slate-800/40 dark:bg-slate-900/10 backdrop-blur-md shadow-sm">
+          <main className="flex-1 overflow-y-auto rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 lg:p-7 backdrop-blur-xl shadow-[0_4px_40px_rgba(0,0,0,0.4)]">
             <Outlet />
           </main>
         </div>
